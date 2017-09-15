@@ -39,7 +39,6 @@ class OAuthSpawnerTestCase(AsyncTestCase):
         self.spawner.user_env(env)
         self.assertEqual(env.get('USER'), 'dummy@globo.com')
 
-    
     def test_make_preexec_fn(self):
 
         self.assertEqual(self.spawner.make_preexec_fn("NoOne"), None)
@@ -63,3 +62,11 @@ class OAuthSpawnerTestCase(AsyncTestCase):
         type(self.spawner.user).name = PropertyMock(return_value=None)
 
         self.assertEqual(self.spawner.service_name, 'prefix-owner-1')
+          
+    def test_service_name_with_dot_username(self):
+
+        type(self.spawner.user).name = PropertyMock(return_value='user.globo')
+
+        self.assertEqual(self.spawner.service_name, 'prefix-owner-user-globo')
+
+

@@ -1,3 +1,5 @@
+import re
+
 from cassinyspawner import SwarmSpawner
 from traitlets import Any
 from tornado import gen
@@ -42,10 +44,15 @@ class OAuthSpawner(SwarmSpawner):
         env["USER"] = self.user.name
         return env
 
+    def normalize_name(self, name):
+
+        return re.sub(r'[^\w-]', '-', name)
+
+
     @property
     def service_name(self):
         
-        user_name = 1    
+        user_name = '1'    
 
         if self.user.name:
             if '@' in self.user.name:
@@ -54,7 +61,7 @@ class OAuthSpawner(SwarmSpawner):
                 user_name = self.user.name
 
         return "{}-{}-{}".format(
-            self.service_prefix, self.service_owner, user_name             
+            self.service_prefix, self.service_owner, self.normalize_name(user_name)
         )
 
     @gen.coroutine
