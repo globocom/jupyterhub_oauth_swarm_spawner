@@ -47,3 +47,19 @@ class OAuthSpawnerTestCase(AsyncTestCase):
     def test_service_name(self):
 
         self.assertEqual(self.spawner.service_name, 'prefix-owner-dummy')
+
+    def test_service_name_without_at_in_username(self):
+
+        type(self.spawner.user).name = PropertyMock(return_value='no-email')
+
+        self.assertEqual(self.spawner.service_name, 'prefix-owner-no-email')
+
+    def test_service_name_with_empty_username(self):
+
+        type(self.spawner.user).name = PropertyMock(return_value='')
+
+        self.assertEqual(self.spawner.service_name, 'prefix-owner-1')
+
+        type(self.spawner.user).name = PropertyMock(return_value=None)
+
+        self.assertEqual(self.spawner.service_name, 'prefix-owner-1')

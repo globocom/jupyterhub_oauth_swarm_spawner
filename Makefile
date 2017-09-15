@@ -11,5 +11,5 @@ test:
 	@python -m unittest
 
 release: clean
-	@python setup.py sdist #upload -r pypi-local
-	@python setup.py sdist #upload -r ipypi-local
+	@python setup.py sdist
+	@python setup.py sdist

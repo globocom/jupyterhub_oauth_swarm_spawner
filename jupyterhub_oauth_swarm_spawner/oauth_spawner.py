@@ -44,7 +44,14 @@ class OAuthSpawner(SwarmSpawner):
 
     @property
     def service_name(self):
-        user_name, _ = self.user.name.split('@', 1)
+        
+        user_name = 1    
+
+        if self.user.name:
+            if '@' in self.user.name:
+                user_name, _ = self.user.name.split('@', 1)
+            else:
+                user_name = self.user.name
 
         return "{}-{}-{}".format(
             self.service_prefix, self.service_owner, user_name             
