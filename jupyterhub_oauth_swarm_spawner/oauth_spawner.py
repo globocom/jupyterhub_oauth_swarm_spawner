@@ -42,8 +42,16 @@ class OAuthSpawner(SwarmSpawner):
         env["USER"] = self.user.name
         return env
 
+    @property
+    def service_name(self):
+        user_name, _ = self.user.name.split('@', 1)
+
+        return "{}-{}-{}".format(
+            self.service_prefix, self.service_owner, user_name             
+        )
+
     @gen.coroutine
-    def start(self, *args, **kwargs):
+    def start(self, *args, **kwargs):        
         if self.pre_start_hook:
             self.pre_start_hook(self.user, "pre_start_hook")
         ip, port = yield super(OAuthSpawner, self).start(*args, **kwargs)
